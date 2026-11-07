@@ -1,0 +1,23 @@
+{
+  "name": "classpulse-ai",
+  "version": "1.0.0",
+  "main": "expo-router/entry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "expo": "~51.0.28",
+    "expo-camera": "~15.0.16",
+    "expo-router": "~3.5.23",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "lucide-react-native": "^0.436.0",
+    "react-native-svg": "15.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0"
+  }
+}

@@ -1,0 +1,46 @@
+# Environment & Secrets
+.env
+*.env
+backend/.env
+mobile/.env
+
+# Node / Expo / EAS
+mobile/node_modules/
+mobile/.expo/
+mobile/dist/
+mobile/build/
+mobile/*.orig.*
+*.apk
+*.aab
+
+# Python & Virtual Environments
+backend/__pycache__/
+backend/app/__pycache__/
+backend/app/**/__pycache__/
+backend/tests/__pycache__/
+backend/.venv/
+backend/venv/
+.venv/
+venv/
+*.pyc
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+
+# YOLO & Model Artifacts
+backend/yolov8n.pt
+backend/yolov8*.pt
+backend/runs/
+runs/
+
+# OS Artifacts
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+*.swo

@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: classpulse-ai-backend
+    env: python
+    rootDir: backend
+    plan: free
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /api/v1/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: YOLO_MODEL
+        value: yolov8n.pt
+      - key: CONFIDENCE_THRESHOLD
+        value: "0.40"
+      - key: MAX_CONCURRENT_INFERENCES
+        value: "1"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: "60"
+      - key: CORS_ORIGINS
+        value: "*"

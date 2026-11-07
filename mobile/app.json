@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "ClassPulse AI",
+    "slug": "classpulse-ai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#0D1B2A"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.classpulse.ai"
+    },
+    "android": {
+      "package": "com.classpulse.ai",
+      "versionCode": 1,
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA"
+      ]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "ClassPulse AI requires camera access to detect classroom and library objects in real time."
+        }
+      ],
+      "expo-router"
+    ],
+    "scheme": "classpulse",
+    "experiments": {
+      "typedRoutes": false
+    },
+    "extra": {
+      "eas": {
+        "projectId": ""
+      }
+    }
+  }
+}
