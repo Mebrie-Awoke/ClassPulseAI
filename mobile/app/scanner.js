@@ -256,7 +256,7 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     backgroundColor: COLORS.surface,
     borderBottomWidth: 1,
-    borderBottomColor: 'rgba(255,255,255,0.07)',
+    borderBottomColor: COLORS.border,
     gap: SPACING.xs,
   },
   backTap: { paddingVertical: SPACING.xs, paddingRight: SPACING.xs },
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   statePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.04)',
+    backgroundColor: '#F1F4F7',
     borderWidth: 1,
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.sm,
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(9,19,33,0.16)',
+    backgroundColor: 'rgba(8,126,154,0.1)',
   },
   scanLine: { width: '78%', height: 2, backgroundColor: COLORS.primary, opacity: 0.75 },
   scanLabel: {
@@ -306,9 +306,9 @@ const styles = StyleSheet.create({
 
   // Error Banner
   errorBanner: {
-    backgroundColor: 'rgba(240,120,120,0.08)',
+    backgroundColor: 'rgba(181,71,71,0.06)',
     borderWidth: 1,
-    borderColor: 'rgba(240,120,120,0.22)',
+    borderColor: 'rgba(181,71,71,0.24)',
     padding: SPACING.sm + 2,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.sm,
@@ -322,7 +322,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: SPACING.xs,
     marginTop: SPACING.xs,
-    backgroundColor: 'rgba(240,120,120,0.14)',
+    backgroundColor: 'rgba(181,71,71,0.08)',
     paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderRadius: RADIUS.sm,
@@ -352,7 +352,7 @@ const styles = StyleSheet.create({
   btnPause: {
     backgroundColor: COLORS.surfaceAlt,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.12)',
+    borderColor: COLORS.border,
   },
   btnStop: { backgroundColor: COLORS.primary },
   btnDisabled: { opacity: 0.4 },

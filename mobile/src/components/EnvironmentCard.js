@@ -66,12 +66,12 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginVertical: SPACING.sm,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: COLORS.border,
     overflow: 'hidden',
   },
   cardSelected: {
-    borderColor: 'rgba(84,199,233,0.55)',
-    backgroundColor: '#14283A',
+    borderColor: 'rgba(8,126,154,0.55)',
+    backgroundColor: '#EAF6F8',
   },
   selectedBar: {
     position: 'absolute',
@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     marginRight: SPACING.md,
   },
   iconWrapSelected: {
-    backgroundColor: 'rgba(84,199,233,0.1)',
+    backgroundColor: 'rgba(8,126,154,0.08)',
   },
   textContainer: {
     flex: 1,

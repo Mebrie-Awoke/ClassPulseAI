@@ -4,7 +4,7 @@
     "slug": "classpulse-ai",
     "version": "1.0.0",
     "orientation": "portrait",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -35,7 +35,7 @@
         {
           "image": "./assets/splashs.jpg",
           "resizeMode": "contain",
-          "backgroundColor": "#091321"
+          "backgroundColor": "#F5F7FA"
         }
       ]
     ],

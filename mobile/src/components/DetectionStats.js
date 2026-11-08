@@ -89,10 +89,10 @@ const styles = StyleSheet.create({
     padding: SPACING.md,
     marginHorizontal: SPACING.md,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: COLORS.border,
   },
   containerStale: {
-    borderColor: 'rgba(232,180,93,0.45)',
+    borderColor: 'rgba(168,103,0,0.4)',
   },
   metaRow: {
     flexDirection: 'row',
@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.sm,
-    backgroundColor: 'rgba(255,255,255,0.05)',
+    backgroundColor: '#F1F4F7',
   },
   freshnessBadgeStale: {
-    backgroundColor: 'rgba(232,180,93,0.12)',
+    backgroundColor: 'rgba(168,103,0,0.1)',
   },
   freshnessText: {
     fontSize: FONTS.sizes.xs,

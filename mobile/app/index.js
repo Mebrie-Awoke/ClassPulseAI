@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.surfaceAlt,
     borderWidth: 1,
-    borderColor: 'rgba(84,199,233,0.22)',
+    borderColor: 'rgba(8,126,154,0.2)',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
   startButtonDisabled: {
     backgroundColor: COLORS.surfaceAlt,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.08)',
+    borderColor: COLORS.border,
   },
   startButtonText: {
     fontSize: FONTS.sizes.md,

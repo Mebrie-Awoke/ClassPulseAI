@@ -16,45 +16,46 @@ export const API_BASE_URL =
 
 export const COLORS = {
   // Backgrounds
-  background: '#091321',
-  surface: '#101D2E',
-  surfaceAlt: '#182A3E',
-  card: '#111F32',
+  background: '#F5F7FA',
+  surface: '#FFFFFF',
+  surfaceAlt: '#EEF3F7',
+  card: '#FFFFFF',
+  border: '#DFE6ED',
 
   // Accents
-  primary: '#54C7E9',
-  primaryDim: '#2AAED5',
-  primaryGlow: 'rgba(84,199,233,0.12)',
-  cyan: '#8BE0F2',
-  cyanDim: 'rgba(139,224,242,0.16)',
+  primary: '#087E9A',
+  primaryDim: '#06677F',
+  primaryGlow: 'rgba(8,126,154,0.09)',
+  cyan: '#48AFC7',
+  cyanDim: 'rgba(8,126,154,0.12)',
 
   // Text
-  textPrimary: '#F4F8FC',
-  textSecondary: '#AAB9C9',
-  textMuted: '#728399',
+  textPrimary: '#17283A',
+  textSecondary: '#526477',
+  textMuted: '#718094',
 
   // Status colors
-  success: '#48CFA2',
-  warning: '#E8B45D',
-  error: '#F07878',
-  live: '#ED7777',
+  success: '#168A64',
+  warning: '#A86700',
+  error: '#B54747',
+  live: '#B54747',
 
   // Scanner State Colors
-  stateWaiting: '#AAB9C9',
-  stateConnecting: '#E8B45D',
-  stateReady: '#54C7E9',
-  stateAnalyzing: '#54C7E9',
-  stateUpdated: '#48CFA2',
-  stateLost: '#F07878',
-  stateReconnecting: '#E8B45D',
-  statePaused: '#E8B45D',
-  stateStopped: '#728399',
+  stateWaiting: '#526477',
+  stateConnecting: '#A86700',
+  stateReady: '#087E9A',
+  stateAnalyzing: '#087E9A',
+  stateUpdated: '#168A64',
+  stateLost: '#B54747',
+  stateReconnecting: '#A86700',
+  statePaused: '#A86700',
+  stateStopped: '#718094',
 
   // Activity levels
-  activityQuiet: '#48CFA2',
-  activityModerate: '#54C7E9',
-  activityBusy: '#E8B45D',
-  activityPacked: '#F07878',
+  activityQuiet: '#168A64',
+  activityModerate: '#087E9A',
+  activityBusy: '#A86700',
+  activityPacked: '#B54747',
 };
 
 export const FONTS = {
