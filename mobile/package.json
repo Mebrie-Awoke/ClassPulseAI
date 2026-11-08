@@ -8,14 +8,19 @@
     "ios": "expo start --ios"
   },
   "dependencies": {
-    "expo": "~51.0.28",
-    "expo-camera": "~15.0.16",
-    "expo-router": "~3.5.23",
-    "expo-status-bar": "~1.12.1",
-    "react": "18.2.0",
-    "react-native": "0.74.5",
-    "lucide-react-native": "^0.436.0",
-    "react-native-svg": "15.2.0"
+    "babel-preset-expo": "~58.0.0",
+    "expo": "~58.0.0",
+    "expo-camera": "~58.0.14",
+    "expo-constants": "~58.0.15",
+    "expo-linking": "~58.0.16",
+    "expo-router": "~58.0.30",
+    "expo-splash-screen": "~58.0.13",
+    "expo-status-bar": "~58.0.4",
+    "lucide-react-native": "^1.70.0",
+    "react": "19.3.0",
+    "react-native": "0.88.1",
+    "react-native-safe-area-context": "~5.11.1",
+    "react-native-svg": "15.16.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0"

@@ -12,7 +12,7 @@
  * http://10.0.2.2:8000 maps directly to the host machine's localhost.
  */
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_BASE_URL || 'http://10.0.2.2:8000';
+  process.env.EXPO_PUBLIC_API_BASE_URL || 'https://classpulseai.onrender.com';
 
 export const COLORS = {
   // Backgrounds

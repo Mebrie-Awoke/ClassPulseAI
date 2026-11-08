@@ -5,10 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "dark",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#0D1B2A"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -28,10 +24,19 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "ClassPulse AI requires camera access to detect classroom and library objects in real time."
+          "cameraPermission": "ClassPulse AI requires camera access to detect classroom and library objects in real time.",
+          "recordAudioAndroid": false
         }
       ],
-      "expo-router"
+      "expo-router",
+      "expo-status-bar",
+      [
+        "expo-splash-screen",
+        {
+          "resizeMode": "contain",
+          "backgroundColor": "#0D1B2A"
+        }
+      ]
     ],
     "scheme": "classpulse",
     "experiments": {
