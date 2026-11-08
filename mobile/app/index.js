@@ -13,6 +13,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { ArrowRight, ScanLine } from 'lucide-react-native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../src/constants/theme';
 import EnvironmentCard from '../src/components/EnvironmentCard';
 
@@ -37,8 +38,12 @@ export default function HomeScreen() {
       >
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.logoIcon}>🔍</Text>
-          <Text style={styles.logoText}>ClassPulse AI</Text>
+          <View style={styles.brandRow}>
+            <View style={styles.logoMark}>
+              <ScanLine color={COLORS.primary} size={22} strokeWidth={1.8} />
+            </View>
+            <Text style={styles.logoText}>ClassPulse AI</Text>
+          </View>
           <Text style={styles.tagline}>Your Environment, Decoded by AI.</Text>
         </View>
 
@@ -75,8 +80,9 @@ export default function HomeScreen() {
             styles.startButtonText,
             !selectedEnvironment && styles.startButtonTextDisabled,
           ]}>
-            {selectedEnvironment ? '▶  Start Scanning' : 'Select an environment first'}
+            {selectedEnvironment ? 'Start Scanning' : 'Select an environment first'}
           </Text>
+          {selectedEnvironment && <ArrowRight color={COLORS.background} size={18} strokeWidth={2.2} />}
         </TouchableOpacity>
 
         {/* Footer note */}
@@ -102,25 +108,35 @@ const styles = StyleSheet.create({
     paddingBottom: SPACING.xl,
   },
   header: {
-    alignItems: 'center',
-    paddingTop: SPACING.xxl,
-    paddingBottom: SPACING.xl,
+    alignItems: 'flex-start',
+    paddingTop: SPACING.xl,
+    paddingBottom: SPACING.xl + 4,
   },
-  logoIcon: {
-    fontSize: 56,
-    marginBottom: SPACING.sm,
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.md,
+    marginBottom: SPACING.md,
+  },
+  logoMark: {
+    width: 44,
+    height: 44,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.surfaceAlt,
+    borderWidth: 1,
+    borderColor: 'rgba(84,199,233,0.22)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   logoText: {
-    fontSize: FONTS.sizes.xxxl,
-    fontWeight: '800',
+    fontSize: FONTS.sizes.xxl,
+    fontWeight: '700',
     color: COLORS.textPrimary,
-    letterSpacing: -0.5,
-    marginBottom: SPACING.xs,
   },
   tagline: {
     fontSize: FONTS.sizes.md,
     color: COLORS.textSecondary,
-    textAlign: 'center',
+    lineHeight: 22,
   },
   section: {
     marginBottom: SPACING.xl,
@@ -138,16 +154,22 @@ const styles = StyleSheet.create({
   },
   startButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.lg,
-    paddingVertical: SPACING.md + 2,
+    borderRadius: RADIUS.md,
+    minHeight: 54,
+    paddingHorizontal: SPACING.lg,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    gap: SPACING.sm,
     alignItems: 'center',
     marginTop: SPACING.sm,
   },
   startButtonDisabled: {
     backgroundColor: COLORS.surfaceAlt,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   startButtonText: {
-    fontSize: FONTS.sizes.lg,
+    fontSize: FONTS.sizes.md,
     fontWeight: '700',
     color: COLORS.background,
   },
@@ -158,6 +180,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: COLORS.textMuted,
     fontSize: FONTS.sizes.xs,
-    marginTop: SPACING.xl,
+    marginTop: SPACING.lg,
   },
 });

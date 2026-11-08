@@ -6,6 +6,7 @@
  */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { Armchair, BookOpen, Laptop, Monitor, Users } from 'lucide-react-native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../constants/theme';
 import {
   activityColor,
@@ -40,6 +41,7 @@ export default function DetectionStats({
   const color = activityColor(result.activity_level);
   const label = activityLabel(result.activity_level);
   const freshnessText = formatFreshness(lastUpdatedTimestamp);
+  const icons = { People: Users, Chairs: Armchair, Books: BookOpen, Laptops: Laptop, Screens: Monitor };
 
   return (
     <View style={[styles.container, isStale && styles.containerStale]}>
@@ -62,7 +64,7 @@ export default function DetectionStats({
         <View style={styles.countRow}>
           {summary.map(item => (
             <View key={item.label} style={styles.countItem}>
-              <Text style={styles.countIcon}>{item.icon}</Text>
+              {React.createElement(icons[item.label] || Monitor, { color: COLORS.textSecondary, size: 15, strokeWidth: 1.8 })}
               <Text style={styles.countNumber}>{item.count}</Text>
               <Text style={styles.countLabel}>{item.label}</Text>
             </View>
@@ -82,15 +84,15 @@ export default function DetectionStats({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(13, 27, 42, 0.92)',
+    backgroundColor: COLORS.surface,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginHorizontal: SPACING.md,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.08)',
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   containerStale: {
-    borderColor: 'rgba(255, 179, 71, 0.4)',
+    borderColor: 'rgba(232,180,93,0.45)',
   },
   metaRow: {
     flexDirection: 'row',
@@ -120,10 +122,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
     borderRadius: RADIUS.sm,
-    backgroundColor: 'rgba(255, 255, 255, 0.06)',
+    backgroundColor: 'rgba(255,255,255,0.05)',
   },
   freshnessBadgeStale: {
-    backgroundColor: 'rgba(255, 179, 71, 0.15)',
+    backgroundColor: 'rgba(232,180,93,0.12)',
   },
   freshnessText: {
     fontSize: FONTS.sizes.xs,
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
   countNumber: {
     fontSize: FONTS.sizes.xl,
     fontWeight: '800',
-    color: COLORS.primary,
+    color: COLORS.textPrimary,
     lineHeight: 24,
   },
   countLabel: {

@@ -4,6 +4,7 @@
  */
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { COLORS } from '../src/constants/theme';
 
 export default function RootLayout() {
   return (
@@ -12,7 +13,7 @@ export default function RootLayout() {
       <Stack
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: '#0D1B2A' },
+          contentStyle: { backgroundColor: COLORS.background },
           animation: 'slide_from_right',
         }}
       />

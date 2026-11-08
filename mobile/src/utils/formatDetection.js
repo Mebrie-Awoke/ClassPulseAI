@@ -18,14 +18,14 @@ export function activityColor(level) {
 }
 
 /**
- * Map an activity level to a human-readable label with indicator dot.
+ * Map an activity level to a human-readable label.
  */
 export function activityLabel(level) {
   const map = {
-    quiet: '🟢 Quiet',
-    moderate: '🔵 Moderate',
-    busy: '🟡 Busy',
-    packed: '🔴 Packed',
+    quiet: 'Quiet',
+    moderate: 'Moderate',
+    busy: 'Busy',
+    packed: 'Packed',
   };
   return map[level] ?? level;
 }

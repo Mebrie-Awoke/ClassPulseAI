@@ -6,16 +6,17 @@
  */
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
+import { BookOpen, Building2, Check } from 'lucide-react-native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../constants/theme';
 
 const ENVIRONMENTS = {
   classroom: {
-    icon: '🏫',
+    icon: Building2,
     name: 'Classroom',
     description: 'Detect people, chairs, laptops & more',
   },
   library: {
-    icon: '📖',
+    icon: BookOpen,
     name: 'Library',
     description: 'Detect readers, books, laptops & more',
   },
@@ -24,6 +25,7 @@ const ENVIRONMENTS = {
 export default function EnvironmentCard({ id, selected, onPress }) {
   const env = ENVIRONMENTS[id];
   if (!env) return null;
+  const EnvironmentIcon = env.icon;
 
   return (
     <TouchableOpacity
@@ -34,7 +36,9 @@ export default function EnvironmentCard({ id, selected, onPress }) {
       {/* Selection indicator bar */}
       {selected && <View style={styles.selectedBar} />}
 
-      <Text style={styles.icon}>{env.icon}</Text>
+      <View style={[styles.iconWrap, selected && styles.iconWrapSelected]}>
+        <EnvironmentIcon color={selected ? COLORS.primary : COLORS.textSecondary} size={21} strokeWidth={1.8} />
+      </View>
 
       <View style={styles.textContainer}>
         <Text style={[styles.name, selected && styles.nameSelected]}>
@@ -46,7 +50,7 @@ export default function EnvironmentCard({ id, selected, onPress }) {
       {/* Checkmark */}
       {selected && (
         <View style={styles.checkmark}>
-          <Text style={styles.checkmarkText}>✓</Text>
+          <Check color={COLORS.background} size={14} strokeWidth={2.5} />
         </View>
       )}
     </TouchableOpacity>
@@ -58,31 +62,38 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: COLORS.card,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginVertical: SPACING.sm,
-    borderWidth: 1.5,
-    borderColor: 'transparent',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
     overflow: 'hidden',
   },
   cardSelected: {
-    borderColor: COLORS.primary,
-    backgroundColor: COLORS.surfaceAlt,
+    borderColor: 'rgba(84,199,233,0.55)',
+    backgroundColor: '#14283A',
   },
   selectedBar: {
     position: 'absolute',
     left: 0,
     top: 0,
     bottom: 0,
-    width: 4,
+    width: 3,
     backgroundColor: COLORS.primary,
-    borderTopLeftRadius: RADIUS.lg,
-    borderBottomLeftRadius: RADIUS.lg,
+    borderTopLeftRadius: RADIUS.md,
+    borderBottomLeftRadius: RADIUS.md,
   },
-  icon: {
-    fontSize: 36,
-    marginLeft: SPACING.xs,
+  iconWrap: {
+    width: 42,
+    height: 42,
+    borderRadius: RADIUS.sm,
+    backgroundColor: COLORS.surfaceAlt,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginRight: SPACING.md,
+  },
+  iconWrapSelected: {
+    backgroundColor: 'rgba(84,199,233,0.1)',
   },
   textContainer: {
     flex: 1,
@@ -99,18 +110,14 @@ const styles = StyleSheet.create({
   description: {
     fontSize: FONTS.sizes.sm,
     color: COLORS.textMuted,
+    lineHeight: 18,
   },
   checkmark: {
     width: 24,
     height: 24,
-    borderRadius: 12,
+    borderRadius: RADIUS.full,
     backgroundColor: COLORS.primary,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  checkmarkText: {
-    color: '#000',
-    fontSize: 14,
-    fontWeight: '800',
   },
 });

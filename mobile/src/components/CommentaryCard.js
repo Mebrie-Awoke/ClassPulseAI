@@ -6,6 +6,7 @@
  */
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
+import { Sparkles } from 'lucide-react-native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../constants/theme';
 
 export default function CommentaryCard({ commentary, isAnalyzing }) {
@@ -25,11 +26,14 @@ export default function CommentaryCard({ commentary, isAnalyzing }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.aiLabel}>🤖 AI Commentary</Text>
+        <View style={styles.labelRow}>
+          <Sparkles color={COLORS.primary} size={14} strokeWidth={1.8} />
+          <Text style={styles.aiLabel}>AI Commentary</Text>
+        </View>
         {isAnalyzing && <Text style={styles.scanningDot}>●</Text>}
       </View>
       <Animated.Text style={[styles.commentary, { opacity }]}>
-        "{displayText}"
+        {displayText}
       </Animated.Text>
     </View>
   );
@@ -37,12 +41,12 @@ export default function CommentaryCard({ commentary, isAnalyzing }) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: COLORS.card,
+    backgroundColor: COLORS.surface,
     borderRadius: RADIUS.md,
     padding: SPACING.md,
     marginHorizontal: SPACING.md,
-    borderLeftWidth: 3,
-    borderLeftColor: COLORS.primary,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.08)',
   },
   header: {
     flexDirection: 'row',
@@ -50,12 +54,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginBottom: SPACING.xs,
   },
+  labelRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs },
   aiLabel: {
     fontSize: FONTS.sizes.xs,
     color: COLORS.primary,
     fontWeight: '700',
     textTransform: 'uppercase',
-    letterSpacing: 1,
+    letterSpacing: 0.4,
   },
   scanningDot: {
     color: COLORS.live,

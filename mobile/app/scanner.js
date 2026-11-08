@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { AlertTriangle, Camera, ChevronLeft, Pause, Play, RefreshCw, Square } from 'lucide-react-native';
 import { COLORS, SPACING, RADIUS, FONTS } from '../src/constants/theme';
 import { useLiveDetection, SCANNER_STATES } from '../src/hooks/useLiveDetection';
 import { getScannerStateMeta, formatProcessingTime } from '../src/utils/formatDetection';
@@ -84,7 +85,7 @@ export default function ScannerScreen() {
 
   // State metadata
   const stateMeta = getScannerStateMeta(scannerState);
-  const envTitle = environment === 'library' ? '📖 Library' : '🏫 Classroom';
+  const envTitle = environment === 'library' ? 'Library' : 'Classroom';
 
   // Permission: loading
   if (!permission) {
@@ -102,7 +103,9 @@ export default function ScannerScreen() {
     return (
       <SafeAreaView style={styles.safe}>
         <View style={styles.centered}>
-          <Text style={styles.permIcon}>📷</Text>
+          <View style={styles.permIcon}>
+            <Camera color={COLORS.primary} size={27} strokeWidth={1.8} />
+          </View>
           <Text style={styles.permTitle}>Camera Permission Required</Text>
           <Text style={styles.permBody}>
             ClassPulse AI needs real-time camera access to detect environment density, chairs, and books.
@@ -129,7 +132,10 @@ export default function ScannerScreen() {
           }}
           style={styles.backTap}
         >
-          <Text style={styles.backArrow}>← Exit</Text>
+          <View style={styles.exitContent}>
+            <ChevronLeft color={COLORS.textSecondary} size={17} strokeWidth={2} />
+            <Text style={styles.backArrow}>Exit</Text>
+          </View>
         </TouchableOpacity>
 
         <Text style={styles.envLabel}>{envTitle}</Text>
@@ -173,10 +179,12 @@ export default function ScannerScreen() {
         {error ? (
           <View style={styles.errorBanner}>
             <View style={styles.errorTextRow}>
-              <Text style={styles.errorBannerText}>⚠ {error}</Text>
+              <AlertTriangle color={COLORS.error} size={16} strokeWidth={1.8} />
+              <Text style={styles.errorBannerText}>{error}</Text>
             </View>
             {scannerState === SCANNER_STATES.CONNECTION_LOST && (
               <TouchableOpacity style={styles.retryBtn} onPress={startDetection}>
+                <RefreshCw color={COLORS.error} size={13} />
                 <Text style={styles.retryBtnText}>Retry Connection</Text>
               </TouchableOpacity>
             )}
@@ -207,9 +215,8 @@ export default function ScannerScreen() {
             disabled={!isRunning}
             activeOpacity={0.8}
           >
-            <Text style={styles.btnPauseText}>
-              {isPaused ? '▶  Resume Scanning' : '⏸  Pause'}
-            </Text>
+            {isPaused ? <Play color={COLORS.textSecondary} size={16} /> : <Pause color={COLORS.textSecondary} size={16} />}
+            <Text style={styles.btnPauseText}>{isPaused ? 'Resume' : 'Pause'}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -217,7 +224,8 @@ export default function ScannerScreen() {
             onPress={handleStopAndShowResults}
             activeOpacity={0.8}
           >
-            <Text style={styles.btnStopText}>⏹  Stop & Results</Text>
+            <Square color={COLORS.background} size={15} fill={COLORS.background} />
+            <Text style={styles.btnStopText}>Stop & Results</Text>
           </TouchableOpacity>
         </View>
 
@@ -245,26 +253,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.sm,
+    paddingVertical: SPACING.md,
     backgroundColor: COLORS.surface,
     borderBottomWidth: 1,
-    borderBottomColor: COLORS.surfaceAlt,
+    borderBottomColor: 'rgba(255,255,255,0.07)',
+    gap: SPACING.xs,
   },
-  backTap: { paddingVertical: SPACING.xs, paddingRight: SPACING.sm },
-  backArrow: { color: COLORS.primary, fontSize: FONTS.sizes.sm + 1, fontWeight: '700' },
-  envLabel: { color: COLORS.textPrimary, fontSize: FONTS.sizes.md, fontWeight: '700' },
+  backTap: { paddingVertical: SPACING.xs, paddingRight: SPACING.xs },
+  exitContent: { flexDirection: 'row', alignItems: 'center' },
+  backArrow: { color: COLORS.textSecondary, fontSize: FONTS.sizes.sm, fontWeight: '600' },
+  envLabel: { flex: 1, color: COLORS.textPrimary, fontSize: FONTS.sizes.md, fontWeight: '700', textAlign: 'center' },
 
   statePill: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    backgroundColor: 'rgba(255,255,255,0.04)',
     borderWidth: 1,
-    borderRadius: RADIUS.full,
-    paddingHorizontal: SPACING.sm + 2,
-    paddingVertical: 3,
+    borderRadius: RADIUS.sm,
+    paddingHorizontal: SPACING.sm,
+    paddingVertical: 5,
+    maxWidth: '43%',
   },
   stateDot: { width: 6, height: 6, borderRadius: 3, marginRight: 5 },
-  stateText: { fontSize: FONTS.sizes.xs - 1, fontWeight: '800', letterSpacing: 0.5 },
+  stateText: { flexShrink: 1, fontSize: FONTS.sizes.xs - 1, fontWeight: '700' },
 
   // Camera Wrap
   cameraWrap: { width: '100%', backgroundColor: '#000', overflow: 'hidden' },
@@ -272,21 +283,21 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 180, 216, 0.08)',
+    backgroundColor: 'rgba(9,19,33,0.16)',
   },
-  scanLine: { width: '80%', height: 2, backgroundColor: COLORS.primary, opacity: 0.8 },
+  scanLine: { width: '78%', height: 2, backgroundColor: COLORS.primary, opacity: 0.75 },
   scanLabel: {
     marginTop: SPACING.sm,
     color: COLORS.primary,
     fontSize: FONTS.sizes.xs,
     fontWeight: '800',
-    letterSpacing: 2,
+    letterSpacing: 0,
   },
   frameBadge: {
     position: 'absolute',
     bottom: SPACING.xs,
     right: SPACING.sm,
-    backgroundColor: 'rgba(0, 0, 0, 0.65)',
+    backgroundColor: 'rgba(9,19,33,0.88)',
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.sm,
     paddingVertical: 2,
@@ -295,25 +306,28 @@ const styles = StyleSheet.create({
 
   // Error Banner
   errorBanner: {
-    backgroundColor: 'rgba(255, 107, 107, 0.12)',
-    borderLeftWidth: 3,
-    borderLeftColor: COLORS.error,
+    backgroundColor: 'rgba(240,120,120,0.08)',
+    borderWidth: 1,
+    borderColor: 'rgba(240,120,120,0.22)',
     padding: SPACING.sm + 2,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.sm,
     borderRadius: RADIUS.sm,
   },
-  errorTextRow: { marginBottom: 2 },
-  errorBannerText: { color: COLORS.error, fontSize: FONTS.sizes.xs + 1, fontWeight: '600' },
+  errorTextRow: { flexDirection: 'row', alignItems: 'center', gap: SPACING.xs, marginBottom: 2 },
+  errorBannerText: { flex: 1, color: COLORS.error, fontSize: FONTS.sizes.xs + 1, fontWeight: '600' },
   retryBtn: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: SPACING.xs,
     marginTop: SPACING.xs,
-    backgroundColor: COLORS.error,
+    backgroundColor: 'rgba(240,120,120,0.14)',
     paddingHorizontal: SPACING.md,
     paddingVertical: 4,
     borderRadius: RADIUS.sm,
   },
-  retryBtnText: { color: '#000', fontSize: FONTS.sizes.xs, fontWeight: '700' },
+  retryBtnText: { color: COLORS.error, fontSize: FONTS.sizes.xs, fontWeight: '700' },
 
   // Stats Wrap
   statsWrap: { marginTop: SPACING.md },
@@ -328,19 +342,22 @@ const styles = StyleSheet.create({
   btn: {
     flex: 1,
     paddingVertical: SPACING.md - 2,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.md,
+    minHeight: 50,
+    flexDirection: 'row',
+    gap: SPACING.sm,
     alignItems: 'center',
     justifyContent: 'center',
   },
   btnPause: {
     backgroundColor: COLORS.surfaceAlt,
-    borderWidth: 1.5,
-    borderColor: COLORS.primary,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.12)',
   },
   btnStop: { backgroundColor: COLORS.primary },
   btnDisabled: { opacity: 0.4 },
-  btnPauseText: { color: COLORS.primary, fontWeight: '700', fontSize: FONTS.sizes.md - 1 },
-  btnStopText: { color: COLORS.background, fontWeight: '800', fontSize: FONTS.sizes.md - 1 },
+  btnPauseText: { color: COLORS.textSecondary, fontWeight: '600', fontSize: FONTS.sizes.sm },
+  btnStopText: { color: COLORS.background, fontWeight: '700', fontSize: FONTS.sizes.sm },
 
   procTime: {
     textAlign: 'center',
@@ -350,7 +367,15 @@ const styles = StyleSheet.create({
   },
 
   // Permission Fallback Screen
-  permIcon: { fontSize: 52, marginBottom: SPACING.md },
+  permIcon: {
+    width: 52,
+    height: 52,
+    borderRadius: RADIUS.md,
+    backgroundColor: COLORS.surfaceAlt,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: SPACING.md,
+  },
   permTitle: { fontSize: FONTS.sizes.xl, fontWeight: '800', color: COLORS.textPrimary, marginBottom: SPACING.sm },
   permBody: {
     fontSize: FONTS.sizes.md - 1,
@@ -361,7 +386,7 @@ const styles = StyleSheet.create({
   },
   grantButton: {
     backgroundColor: COLORS.primary,
-    borderRadius: RADIUS.lg,
+    borderRadius: RADIUS.md,
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xl,
     marginBottom: SPACING.sm,
