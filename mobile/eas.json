@@ -7,7 +7,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "https://classpulse-ai-backend.onrender.com"
+        "EXPO_PUBLIC_API_BASE_URL": "https://classpulseai.onrender.com"
       }
     },
     "preview": {
@@ -16,7 +16,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "https://classpulse-ai-backend.onrender.com"
+        "EXPO_PUBLIC_API_BASE_URL": "https://classpulseai.onrender.com"
       }
     },
     "production": {
@@ -24,7 +24,7 @@
         "buildType": "app-bundle"
       },
       "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "https://classpulse-ai-backend.onrender.com"
+        "EXPO_PUBLIC_API_BASE_URL": "https://classpulseai.onrender.com"
       }
     }
   },

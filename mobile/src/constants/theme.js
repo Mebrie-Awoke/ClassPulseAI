@@ -6,7 +6,7 @@
  * environment variable (automatically inlined by Expo during bundling).
  *
  * Live Render Backend:
- * https://classpulse-ai-backend.onrender.com
+ * https://classpulseai.onrender.com
  *
  * For local testing on a physical phone:
  * Set EXPO_PUBLIC_API_BASE_URL=http://<YOUR_LAN_IP>:8000 in mobile/.env
@@ -15,7 +15,7 @@
  * http://10.0.2.2:8000 maps directly to the host machine's localhost.
  */
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_BASE_URL || 'https://classpulse-ai-backend.onrender.com';
+  process.env.EXPO_PUBLIC_API_BASE_URL || 'https://classpulseai.onrender.com';
 
 export const COLORS = {
   // Backgrounds
