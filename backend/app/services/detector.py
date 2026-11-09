@@ -97,10 +97,10 @@ class ObjectDetector:
         max_dim: int = 4096,
     ) -> Tuple[np.ndarray, int, int]:
         """
-        Safely decode raw image bytes and validate image dimensions.
+        Decode an image, validate its dimensions, and scale it to the inference limit.
 
         Raises:
-            ValueError: If image is corrupted, unreadable, or violates dimension boundaries.
+            ValueError: If image is corrupted, unreadable, or below the minimum dimensions.
         """
         img_array = np.frombuffer(image_bytes, dtype=np.uint8)
         img = cv2.imdecode(img_array, cv2.IMREAD_COLOR)
@@ -113,7 +113,11 @@ class ObjectDetector:
             raise ValueError(f"Image dimensions too small ({w}x{h}). Minimum required dimension is {min_dim}x{min_dim}px.")
 
         if w > max_dim or h > max_dim:
-            raise ValueError(f"Image dimensions too large ({w}x{h}). Maximum permitted dimension is {max_dim}x{max_dim}px.")
+            scale = max_dim / max(w, h)
+            width = max(1, round(w * scale))
+            height = max(1, round(h * scale))
+            img = cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
+            h, w = img.shape[:2]
 
         return img, w, h
 

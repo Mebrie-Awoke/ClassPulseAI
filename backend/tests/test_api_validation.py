@@ -170,3 +170,30 @@ def test_detect_success_with_mock_model(client):
         assert len(data["commentary"]) > 0
         assert data["image_width"] == 300
         assert data["image_height"] == 300
+
+
+def test_detect_resizes_image_exceeding_max_dimension(client):
+    """Large camera frames are resized proportionally instead of rejected."""
+    mock_result = AnalysisResult(
+        detections=[],
+        people_count=0,
+        chair_count=0,
+        book_count=0,
+        laptop_count=0,
+        tv_count=0,
+        processing_time_ms=12.0,
+    )
+    img_bytes = make_valid_image_bytes(width=300, height=4608)
+
+    with patch.object(detector, "_loaded", True), \
+         patch.object(detector, "detect", return_value=mock_result):
+        response = client.post(
+            "/api/v1/detect",
+            data={"environment": "classroom"},
+            files={"image": ("frame.jpg", img_bytes, "image/jpeg")},
+        )
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["image_height"] == 4096
+    assert data["image_width"] == 267
