@@ -1,9 +1,12 @@
 /**
- * ClassPulse AI — Theme & Configuration Constants.
+ * RoomPulse — Theme & Configuration Constants.
  *
  * API URL Configuration:
  * In development and production, this reads from the EXPO_PUBLIC_API_BASE_URL
  * environment variable (automatically inlined by Expo during bundling).
+ *
+ * Live Render Backend:
+ * https://classpulse-ai-backend.onrender.com
  *
  * For local testing on a physical phone:
  * Set EXPO_PUBLIC_API_BASE_URL=http://<YOUR_LAN_IP>:8000 in mobile/.env
@@ -12,7 +15,7 @@
  * http://10.0.2.2:8000 maps directly to the host machine's localhost.
  */
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_BASE_URL || 'https://classpulseai.onrender.com';
+  process.env.EXPO_PUBLIC_API_BASE_URL || 'https://classpulse-ai-backend.onrender.com';
 
 export const COLORS = {
   // Backgrounds
@@ -91,8 +94,8 @@ export const RADIUS = {
 /** Analysis loop interval in milliseconds */
 export const ANALYSIS_INTERVAL_MS = 2000;
 
-/** Network request timeout in milliseconds */
-export const REQUEST_TIMEOUT_MS = 10000;
+/** Network request timeout in milliseconds (allows for cloud cold-starts) */
+export const REQUEST_TIMEOUT_MS = 15000;
 
 /** Time after which unrefreshed detections are flagged as stale */
 export const STALE_THRESHOLD_MS = 6000;

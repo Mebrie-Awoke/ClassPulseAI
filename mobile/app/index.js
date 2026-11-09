@@ -42,7 +42,7 @@ export default function HomeScreen() {
             <View style={styles.logoMark}>
               <ScanLine color={COLORS.primary} size={22} strokeWidth={1.8} />
             </View>
-            <Text style={styles.logoText}>ClassPulse AI</Text>
+            <Text style={styles.logoText}>RoomPulse</Text>
           </View>
           <Text style={styles.tagline}>Your Environment, Decoded by AI.</Text>
         </View>

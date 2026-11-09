@@ -56,7 +56,7 @@ async def lifespan(app: FastAPI):
 settings = get_settings()
 
 app = FastAPI(
-    title="ClassPulse AI — Detection API",
+    title="RoomPulse — Detection API",
     description="Real-time object detection and contextual commentary for classrooms and libraries.",
     version="1.1.0",
     lifespan=lifespan,
@@ -96,7 +96,7 @@ app.include_router(router)
 @app.get("/", include_in_schema=False)
 async def root():
     return {
-        "service": "ClassPulse AI",
+        "service": "RoomPulse",
         "status": "online",
         "docs": "/docs",
         "health": "/api/v1/health",

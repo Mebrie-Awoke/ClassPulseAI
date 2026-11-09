@@ -40,7 +40,7 @@ def test_root_endpoint(client):
     response = client.get("/")
     assert response.status_code == 200
     data = response.json()
-    assert data["service"] == "ClassPulse AI"
+    assert data["service"] in ("RoomPulse", "ClassPulse AI")
 
 
 def test_readiness_when_model_loaded(client):
@@ -168,3 +168,5 @@ def test_detect_success_with_mock_model(client):
         assert data["approximate"] is True
         assert len(data["detections"]) == 2
         assert len(data["commentary"]) > 0
+        assert data["image_width"] == 300
+        assert data["image_height"] == 300

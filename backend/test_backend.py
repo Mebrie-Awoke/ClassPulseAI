@@ -107,7 +107,7 @@ def test_oversized_payload():
 
 if __name__ == "__main__":
     print("=" * 65)
-    print(f"ClassPulse AI — Live Backend Smoke Test on {BACKEND_URL}")
+    print(f"RoomPulse — Live Backend Smoke Test on {BACKEND_URL}")
     print("=" * 65)
 
     tests = [

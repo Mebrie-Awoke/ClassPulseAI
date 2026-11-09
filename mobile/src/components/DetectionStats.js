@@ -1,5 +1,5 @@
 /**
- * ClassPulse AI — DetectionStats Component.
+ * RoomPulse — DetectionStats Component.
  *
  * Renders detected object counts, activity indicator, approximate disclaimer,
  * and a clear freshness/stale warning badge.

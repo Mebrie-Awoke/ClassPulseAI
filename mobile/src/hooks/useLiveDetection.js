@@ -46,6 +46,7 @@ export function useLiveDetection(cameraRef, environment, intervalMs = ANALYSIS_I
   const [isStale, setIsStale] = useState(false);
   const [error, setError] = useState(null);
   const [frameCount, setFrameCount] = useState(0);
+  const [frameDimensions, setFrameDimensions] = useState({ width: 0, height: 0 });
 
   // Synchronization refs (do not trigger re-renders)
   const isMountedRef = useRef(true);
@@ -120,9 +121,21 @@ export function useLiveDetection(cameraRef, environment, intervalMs = ANALYSIS_I
 
       if (!isMountedRef.current) return;
 
+      const imgWidth = result?.image_width || photo?.width || 0;
+      const imgHeight = result?.image_height || photo?.height || 0;
+      if (imgWidth > 0 && imgHeight > 0) {
+        setFrameDimensions({ width: imgWidth, height: imgHeight });
+      }
+
+      const enrichedResult = {
+        ...result,
+        image_width: imgWidth,
+        image_height: imgHeight,
+      };
+
       // Reset error counter and update state
       consecutiveErrorsRef.current = 0;
-      setLastResult(result);
+      setLastResult(enrichedResult);
       setLastUpdatedTimestamp(Date.now());
       setIsStale(false);
       setError(null);
@@ -153,7 +166,10 @@ export function useLiveDetection(cameraRef, environment, intervalMs = ANALYSIS_I
    */
   const startDetection = useCallback(async () => {
     if (!isMountedRef.current) return;
-    if (intervalRef.current) return; // Already running
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
 
     isRunningRef.current = true;
     isPausedRef.current = false;
@@ -239,6 +255,7 @@ export function useLiveDetection(cameraRef, environment, intervalMs = ANALYSIS_I
     isStale,
     error,
     frameCount,
+    frameDimensions,
     startDetection,
     stopDetection,
     togglePause,

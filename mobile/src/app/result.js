@@ -109,7 +109,7 @@ export default function ResultScreen() {
 
         {/* AI Commentary */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🤖 AI Commentary</Text>
+          <Text style={styles.sectionTitle}>AI Commentary</Text>
           <View style={styles.commentaryBox}>
             <Text style={styles.commentaryText}>"{result.commentary}"</Text>
           </View>

@@ -24,6 +24,8 @@ class DetectionResponse(BaseModel):
     commentary: str
     processing_time_ms: float
     approximate: bool = True       # Always true — counts and activities are estimates
+    image_width: int = 0
+    image_height: int = 0
 
 
 class HealthResponse(BaseModel):

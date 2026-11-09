@@ -56,7 +56,7 @@ export default function ScannerScreen() {
         if (!result.granted) {
           Alert.alert(
             'Camera Permission Required',
-            'ClassPulse AI needs camera access to analyze your environment. Please enable it in your device settings.',
+            'RoomPulse needs camera access to analyze your environment. Please enable it in your device settings.',
             [{ text: 'OK', onPress: () => router.back() }]
           );
         }
@@ -111,7 +111,7 @@ export default function ScannerScreen() {
           <Text style={styles.errorText}>📷</Text>
           <Text style={styles.errorTitle}>Camera Access Needed</Text>
           <Text style={styles.errorBody}>
-            ClassPulse AI needs camera access to analyze your environment.
+            RoomPulse needs camera access to analyze your environment.
           </Text>
           <TouchableOpacity style={styles.permButton} onPress={requestPermission}>
             <Text style={styles.permButtonText}>Grant Permission</Text>

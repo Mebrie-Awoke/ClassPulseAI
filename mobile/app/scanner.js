@@ -1,15 +1,15 @@
 /**
- * ClassPulse AI — Live Scanner Screen.
+ * RoomPulse — Live Scanner Screen.
  *
  * Implements:
  *   - Continuous, flicker-free CameraView preview.
- *   - 9-state reactive scanner state badge.
- *   - Frame rate / freshness / stale indicator.
- *   - Contextual commentary overlay.
- *   - Pause, resume, retry, and stop controls.
- *   - Safe lifecycle cleanup on unmount.
+ *   - Real-time YOLO bounding box overlay with object tags and confidence.
+ *   - Reactive scanner state indicator with clear connection recovery.
+ *   - Object detection metrics and contextual AI commentary.
+ *   - Pause, resume, retry, and stop session controls.
+ *   - Safe lifecycle cleanup on unmount with zero resource leaks.
  */
-import React, { useRef, useEffect, useCallback } from 'react';
+import React, { useRef, useEffect, useCallback, useState } from 'react';
 import {
   View,
   Text,
@@ -28,15 +28,25 @@ import { useLiveDetection, SCANNER_STATES } from '../src/hooks/useLiveDetection'
 import { getScannerStateMeta, formatProcessingTime } from '../src/utils/formatDetection';
 import DetectionStats from '../src/components/DetectionStats';
 import CommentaryCard from '../src/components/CommentaryCard';
+import BoundingBoxOverlay from '../src/components/BoundingBoxOverlay';
 
 const { height: SCREEN_HEIGHT } = Dimensions.get('window');
-const CAMERA_HEIGHT = Math.round(SCREEN_HEIGHT * 0.48);
+const CAMERA_HEIGHT = Math.round(SCREEN_HEIGHT * 0.46);
 
 export default function ScannerScreen() {
   const router = useRouter();
   const { environment } = useLocalSearchParams();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
+
+  const [cameraLayout, setCameraLayout] = useState({ width: 0, height: 0 });
+
+  const handleCameraLayout = useCallback((event) => {
+    const { width, height } = event.nativeEvent.layout;
+    if (width > 0 && height > 0) {
+      setCameraLayout({ width, height });
+    }
+  }, []);
 
   const {
     scannerState,
@@ -48,6 +58,7 @@ export default function ScannerScreen() {
     isStale,
     error,
     frameCount,
+    frameDimensions,
     startDetection,
     stopDetection,
     togglePause,
@@ -58,13 +69,13 @@ export default function ScannerScreen() {
     if (permission && !permission.granted && !permission.canAskAgain) {
       Alert.alert(
         'Camera Permission Required',
-        'ClassPulse AI needs camera access to analyze your environment. Please enable it in your device settings.',
+        'RoomPulse needs camera access to analyze your environment. Please enable it in your device settings.',
         [{ text: 'Return Home', onPress: () => router.back() }]
       );
     }
   }, [permission, router]);
 
-  // When camera view initializes, kick off detection
+  // When camera view initializes, kick off detection loop
   const handleCameraReady = useCallback(() => {
     if (!isRunning) {
       startDetection();
@@ -104,13 +115,13 @@ export default function ScannerScreen() {
       <SafeAreaView style={styles.safe}>
         <View style={styles.centered}>
           <View style={styles.permIcon}>
-            <Camera color={COLORS.primary} size={27} strokeWidth={1.8} />
+            <Camera color={COLORS.primary} size={28} strokeWidth={1.8} />
           </View>
           <Text style={styles.permTitle}>Camera Permission Required</Text>
           <Text style={styles.permBody}>
-            ClassPulse AI needs real-time camera access to detect environment density, chairs, and books.
+            RoomPulse needs real-time camera access to detect environment density, chairs, and books.
           </Text>
-          <TouchableOpacity style={styles.grantButton} onPress={requestPermission}>
+          <TouchableOpacity style={styles.grantButton} onPress={requestPermission} activeOpacity={0.8}>
             <Text style={styles.grantButtonText}>Grant Permission</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.goBackButton} onPress={() => router.back()}>
@@ -131,27 +142,31 @@ export default function ScannerScreen() {
             router.back();
           }}
           style={styles.backTap}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <View style={styles.exitContent}>
-            <ChevronLeft color={COLORS.textSecondary} size={17} strokeWidth={2} />
+            <ChevronLeft color={COLORS.textSecondary} size={18} strokeWidth={2.2} />
             <Text style={styles.backArrow}>Exit</Text>
           </View>
         </TouchableOpacity>
 
-        <Text style={styles.envLabel}>{envTitle}</Text>
+        <Text style={styles.envLabel}>{envTitle} Mode</Text>
 
         {/* Reactive Scanner State Pill */}
         <View style={[styles.statePill, { borderColor: stateMeta.color }]}>
           <View style={[styles.stateDot, { backgroundColor: stateMeta.dotColor }]} />
-          <Text style={[styles.stateText, { color: stateMeta.color }]}>
+          <Text style={[styles.stateText, { color: stateMeta.color }]} numberOfLines={1}>
             {stateMeta.label.toUpperCase()}
           </Text>
         </View>
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
-        {/* Continuous Camera Preview */}
-        <View style={[styles.cameraWrap, { height: CAMERA_HEIGHT }]}>
+        {/* Continuous Camera Preview Container */}
+        <View
+          style={[styles.cameraWrap, { height: CAMERA_HEIGHT }]}
+          onLayout={handleCameraLayout}
+        >
           <CameraView
             ref={cameraRef}
             style={StyleSheet.absoluteFill}
@@ -159,11 +174,20 @@ export default function ScannerScreen() {
             onCameraReady={handleCameraReady}
           />
 
-          {/* Analysis Active Scan Overlay */}
+          {/* Real-Time YOLO Bounding Boxes & Confidence Tags */}
+          <BoundingBoxOverlay
+            detections={lastResult?.detections || []}
+            imageWidth={lastResult?.image_width || frameDimensions?.width || 0}
+            imageHeight={lastResult?.image_height || frameDimensions?.height || 0}
+            layoutWidth={cameraLayout.width}
+            layoutHeight={cameraLayout.height}
+          />
+
+          {/* Analysis Active Pulse Bar */}
           {isAnalyzing && (
             <View style={styles.scanOverlay} pointerEvents="none">
               <View style={styles.scanLine} />
-              <Text style={styles.scanLabel}>ANALYZING ENVIRONMENT...</Text>
+              <Text style={styles.scanLabel}>ANALYZING SCENE...</Text>
             </View>
           )}
 
@@ -179,15 +203,13 @@ export default function ScannerScreen() {
         {error ? (
           <View style={styles.errorBanner}>
             <View style={styles.errorTextRow}>
-              <AlertTriangle color={COLORS.error} size={16} strokeWidth={1.8} />
+              <AlertTriangle color={COLORS.error} size={16} strokeWidth={2} />
               <Text style={styles.errorBannerText}>{error}</Text>
             </View>
-            {scannerState === SCANNER_STATES.CONNECTION_LOST && (
-              <TouchableOpacity style={styles.retryBtn} onPress={startDetection}>
-                <RefreshCw color={COLORS.error} size={13} />
-                <Text style={styles.retryBtnText}>Retry Connection</Text>
-              </TouchableOpacity>
-            )}
+            <TouchableOpacity style={styles.retryBtn} onPress={startDetection} activeOpacity={0.75}>
+              <RefreshCw color={COLORS.error} size={13} strokeWidth={2} />
+              <Text style={styles.retryBtnText}>Retry Connection</Text>
+            </TouchableOpacity>
           </View>
         ) : null}
 
@@ -215,24 +237,28 @@ export default function ScannerScreen() {
             disabled={!isRunning}
             activeOpacity={0.8}
           >
-            {isPaused ? <Play color={COLORS.textSecondary} size={16} /> : <Pause color={COLORS.textSecondary} size={16} />}
-            <Text style={styles.btnPauseText}>{isPaused ? 'Resume' : 'Pause'}</Text>
+            {isPaused ? (
+              <Play color={COLORS.textPrimary} size={16} strokeWidth={2} />
+            ) : (
+              <Pause color={COLORS.textPrimary} size={16} strokeWidth={2} />
+            )}
+            <Text style={styles.btnPauseText}>{isPaused ? 'Resume Scan' : 'Pause Scan'}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             style={[styles.btn, styles.btnStop]}
             onPress={handleStopAndShowResults}
-            activeOpacity={0.8}
+            activeOpacity={0.85}
           >
             <Square color={COLORS.background} size={15} fill={COLORS.background} />
-            <Text style={styles.btnStopText}>Stop & Results</Text>
+            <Text style={styles.btnStopText}>Stop & Summary</Text>
           </TouchableOpacity>
         </View>
 
         {/* Processing Metric Footnote */}
         {lastResult?.processing_time_ms ? (
           <Text style={styles.procTime}>
-            Inference latency: {formatProcessingTime(lastResult.processing_time_ms)} · CPU Pipeline
+            Inference latency: {formatProcessingTime(lastResult.processing_time_ms)} · YOLOv8 CPU
           </Text>
         ) : null}
       </ScrollView>
@@ -253,14 +279,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: SPACING.md,
-    paddingVertical: SPACING.md,
+    paddingVertical: SPACING.sm + 4,
     backgroundColor: COLORS.surface,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.border,
     gap: SPACING.xs,
   },
   backTap: { paddingVertical: SPACING.xs, paddingRight: SPACING.xs },
-  exitContent: { flexDirection: 'row', alignItems: 'center' },
+  exitContent: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   backArrow: { color: COLORS.textSecondary, fontSize: FONTS.sizes.sm, fontWeight: '600' },
   envLabel: { flex: 1, color: COLORS.textPrimary, fontSize: FONTS.sizes.md, fontWeight: '700', textAlign: 'center' },
 
@@ -269,47 +295,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F1F4F7',
     borderWidth: 1,
-    borderRadius: RADIUS.sm,
-    paddingHorizontal: SPACING.sm,
-    paddingVertical: 5,
-    maxWidth: '43%',
+    borderRadius: RADIUS.full,
+    paddingHorizontal: SPACING.sm + 2,
+    paddingVertical: 4,
+    maxWidth: '45%',
   },
   stateDot: { width: 6, height: 6, borderRadius: 3, marginRight: 5 },
-  stateText: { flexShrink: 1, fontSize: FONTS.sizes.xs - 1, fontWeight: '700' },
+  stateText: { flexShrink: 1, fontSize: 10, fontWeight: '700', letterSpacing: 0.3 },
 
   // Camera Wrap
-  cameraWrap: { width: '100%', backgroundColor: '#000', overflow: 'hidden' },
+  cameraWrap: {
+    width: '100%',
+    backgroundColor: '#030712',
+    overflow: 'hidden',
+    borderBottomWidth: 1,
+    borderBottomColor: COLORS.border,
+  },
   scanOverlay: {
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(8,126,154,0.1)',
+    backgroundColor: 'rgba(8,126,154,0.08)',
   },
-  scanLine: { width: '78%', height: 2, backgroundColor: COLORS.primary, opacity: 0.75 },
+  scanLine: { width: '80%', height: 2, backgroundColor: COLORS.primary, opacity: 0.8 },
   scanLabel: {
     marginTop: SPACING.sm,
     color: COLORS.primary,
-    fontSize: FONTS.sizes.xs,
+    fontSize: 10,
     fontWeight: '800',
-    letterSpacing: 0,
+    letterSpacing: 0.8,
   },
   frameBadge: {
     position: 'absolute',
-    bottom: SPACING.xs,
+    bottom: SPACING.xs + 2,
     right: SPACING.sm,
-    backgroundColor: 'rgba(9,19,33,0.88)',
+    backgroundColor: 'rgba(3,7,18,0.85)',
     borderRadius: RADIUS.sm,
     paddingHorizontal: SPACING.sm,
-    paddingVertical: 2,
+    paddingVertical: 3,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.1)',
   },
-  frameBadgeText: { color: 'rgba(255, 255, 255, 0.7)', fontSize: FONTS.sizes.xs - 1 },
+  frameBadgeText: { color: 'rgba(255, 255, 255, 0.8)', fontSize: 10, fontWeight: '600' },
 
   // Error Banner
   errorBanner: {
     backgroundColor: 'rgba(181,71,71,0.06)',
     borderWidth: 1,
     borderColor: 'rgba(181,71,71,0.24)',
-    padding: SPACING.sm + 2,
+    padding: SPACING.sm + 4,
     marginHorizontal: SPACING.md,
     marginTop: SPACING.sm,
     borderRadius: RADIUS.sm,
@@ -321,10 +355,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: SPACING.xs,
-    marginTop: SPACING.xs,
-    backgroundColor: 'rgba(181,71,71,0.08)',
+    marginTop: SPACING.xs + 2,
+    backgroundColor: 'rgba(181,71,71,0.1)',
     paddingHorizontal: SPACING.md,
-    paddingVertical: 4,
+    paddingVertical: 6,
     borderRadius: RADIUS.sm,
   },
   retryBtnText: { color: COLORS.error, fontSize: FONTS.sizes.xs, fontWeight: '700' },
@@ -350,31 +384,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   btnPause: {
-    backgroundColor: COLORS.surfaceAlt,
+    backgroundColor: COLORS.surface,
     borderWidth: 1,
     borderColor: COLORS.border,
   },
-  btnStop: { backgroundColor: COLORS.primary },
-  btnDisabled: { opacity: 0.4 },
-  btnPauseText: { color: COLORS.textSecondary, fontWeight: '600', fontSize: FONTS.sizes.sm },
+  btnStop: {
+    backgroundColor: COLORS.primary,
+  },
+  btnDisabled: { opacity: 0.45 },
+  btnPauseText: { color: COLORS.textPrimary, fontWeight: '700', fontSize: FONTS.sizes.sm },
   btnStopText: { color: COLORS.background, fontWeight: '700', fontSize: FONTS.sizes.sm },
 
   procTime: {
     textAlign: 'center',
     color: COLORS.textMuted,
-    fontSize: FONTS.sizes.xs - 1,
-    marginTop: SPACING.sm,
+    fontSize: 11,
+    marginTop: SPACING.sm + 2,
   },
 
   // Permission Fallback Screen
   permIcon: {
-    width: 52,
-    height: 52,
+    width: 56,
+    height: 56,
     borderRadius: RADIUS.md,
     backgroundColor: COLORS.surfaceAlt,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: SPACING.md,
+    borderWidth: 1,
+    borderColor: COLORS.border,
   },
   permTitle: { fontSize: FONTS.sizes.xl, fontWeight: '800', color: COLORS.textPrimary, marginBottom: SPACING.sm },
   permBody: {
@@ -383,6 +421,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
     marginBottom: SPACING.xl,
+    paddingHorizontal: SPACING.md,
   },
   grantButton: {
     backgroundColor: COLORS.primary,
@@ -390,6 +429,8 @@ const styles = StyleSheet.create({
     paddingVertical: SPACING.md,
     paddingHorizontal: SPACING.xl,
     marginBottom: SPACING.sm,
+    width: '100%',
+    alignItems: 'center',
   },
   grantButtonText: { color: COLORS.background, fontWeight: '700', fontSize: FONTS.sizes.md },
   goBackButton: { padding: SPACING.md },

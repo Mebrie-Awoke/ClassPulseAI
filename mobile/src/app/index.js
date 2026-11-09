@@ -39,7 +39,7 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.logoIcon}>🔍</Text>
-          <Text style={styles.logoText}>ClassPulse AI</Text>
+          <Text style={styles.logoText}>RoomPulse</Text>
           <Text style={styles.tagline}>Your Environment, Decoded by AI.</Text>
         </View>
 
@@ -79,7 +79,6 @@ export default function HomeScreen() {
 
         {/* Footer note */}
         <Text style={styles.footerNote}>
-          Powered by YOLOv8 · Real-time object detection
         </Text>
       </ScrollView>
     </SafeAreaView>

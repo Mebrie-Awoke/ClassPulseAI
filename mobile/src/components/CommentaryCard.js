@@ -1,5 +1,5 @@
 /**
- * ClassPulse AI — CommentaryCard component
+ * RoomPulse — CommentaryCard component
  *
  * Shows the AI-generated commentary from the backend.
  * Animates subtly when new commentary arrives.

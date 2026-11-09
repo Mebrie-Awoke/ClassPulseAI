@@ -158,7 +158,10 @@ async def detect(
         )
 
     # 3. Validate image MIME type
-    if image.content_type not in ("image/jpeg", "image/png", "image/jpg"):
+    content_type = (image.content_type or "").split(";")[0].strip().lower()
+    valid_types = {"image/jpeg", "image/png", "image/jpg"}
+    is_octet_image = content_type == "application/octet-stream" and image.filename and image.filename.lower().endswith(('.jpg', '.jpeg', '.png'))
+    if content_type not in valid_types and not is_octet_image:
         raise HTTPException(
             status_code=status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
             detail=f"Unsupported image type '{image.content_type}'. Send JPEG or PNG.",
@@ -244,4 +247,6 @@ async def detect(
         commentary=commentary,
         processing_time_ms=result.processing_time_ms,
         approximate=True,
+        image_width=width,
+        image_height=height,
     )

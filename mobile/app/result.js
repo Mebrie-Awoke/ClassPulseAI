@@ -1,8 +1,8 @@
 /**
- * ClassPulse AI — Results Screen (app/result.js)
+ * RoomPulse — Results Screen (app/result.js)
  *
- * Displays a summary of the last scan.
- * Result data passed via router params (not persisted anywhere).
+ * Displays a summary of the last scan session.
+ * Result data passed via router params (stateless, privacy-preserving).
  */
 import React, { useMemo } from 'react';
 import {

@@ -1,5 +1,5 @@
 /**
- * ClassPulse AI — EnvironmentCard component
+ * RoomPulse — EnvironmentCard component
  *
  * Displays a selectable card for one environment (Classroom or Library).
  * Shows an icon, name, description, and selected visual state.
