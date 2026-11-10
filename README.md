@@ -2,7 +2,7 @@
   
 > **.Your Environment, Decoded by AI**   
 > Real-time computer vision analysis and contextual commentary for classrooms and libraries.  
-Meb
+Me
 ---      
 
 ## 1. Project Overview  
