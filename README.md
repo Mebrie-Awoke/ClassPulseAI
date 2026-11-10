@@ -22,7 +22,7 @@ When a user selects an environment and starts scanning:
 
 ---
 
-## 2. Technology Stacks
+## 2. Technology Stack
 
 | Layer | Technologies |
 |---|---|
