@@ -7,7 +7,7 @@
 
 ## 1. Project Overview
 
-**ClassPulse AI** helps users understand what is happening in their immediate learning spaces through continuous, live camera analysis. 
+**RoomPulse** helps users understand what is happening in their immediate learning spaces through continuous, live camera analysis. 
 
 The application focuses on two distinct environments:
 1. **Classroom**
