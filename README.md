@@ -5,7 +5,7 @@
 
 --- 
 
-## 1. Project Overview
+## 1. Project Overview  
 
 **RoomPulse** helps users understand what is happening in their immediate learning spaces through continuous, live camera analysis. 
 
