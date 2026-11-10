@@ -83,7 +83,7 @@ ClassPulseAI/
     │       └── formatDetection.js  # Formatters, scanner state metadata, activity labels
     ├── app.json                    # Expo application manifest (permissions, package ID)
     ├── eas.json                    # EAS build profiles (Preview APK & Production AAB)
-    ├── package.json                # Node dependencies & scripts
+    ├── package.json                # Node dependencies & script
     └── .env.example                # Mobile environment variable template
 ```
 
