@@ -21,7 +21,7 @@ When a user selects an environment and starts scanning:
 - The user can pause, resume, or finish the session to view a final session summary.
 
 ---
-
+ 
 ## 2. Technology Stack  
 
 | Layer | Technologies |
