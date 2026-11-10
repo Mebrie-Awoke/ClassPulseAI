@@ -288,7 +288,7 @@ eas build --platform android --profile production
 > [!IMPORTANT]
 > **Open Source License vs. Commercial Use**
 > 
-> ClassPulse AI uses **YOLOv8n** from [Ultralytics](https://github.com/ultralytics/ultralytics).
+>PoomPulse uses **YOLOv8n** from [Ultralytics](https://github.com/ultralytics/ultralytics).
 > 
 > - **AGPL-3.0 License:** Ultralytics YOLOv8 is licensed under the **GNU Affero General Public License v3.0**. Under Section 13 of the AGPL-3.0, if you run the backend on a server and allow remote users to interact with it across a network (e.g. mobile app communicating with FastAPI), you are obligated to make the complete source code of the software available to those network users under the AGPL-3.0.
 > - **Commercial / Closed-Source Alternative:** If you plan to distribute ClassPulse AI as a proprietary, closed-source commercial product or SaaS without releasing your source code, you must obtain an **Enterprise License** directly from Ultralytics.
